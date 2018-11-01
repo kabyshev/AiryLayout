@@ -11,7 +11,7 @@ label.rightAnchor ~ customView.rightAnchor - 4.0
 ```
 ### Equals more compact API:
 ```swift
-label.pin([.top(7): .top, .left(15): .left, .right(4): .right], to: customView)
+label.pin([.top(7): .bottom, .left(15): .left, .right(4): .right], to: customView)
 ```
 
 ### Pins edge to edge and with inset also:
