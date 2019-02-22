@@ -34,7 +34,6 @@ extension UIView {
     ///
     /// Using third-party methods (not from this extension) in the closure will not lead to any effect or, conversely,
     /// to undefined behavior.
-    @available(iOS 11.0, *)
     @discardableResult
     func withoutSafeArea(_ closure: (UIView) -> Void) -> Self {
         isSafeAreaEnabled = false
