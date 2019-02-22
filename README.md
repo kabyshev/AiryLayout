@@ -3,7 +3,12 @@ Simple Auto Layout wrapper - write readable layouts!
 
 [![Language: Swift 4.2](https://img.shields.io/badge/language-swift%204-f48041.svg?style=flat)](https://developer.apple.com/swift)
 
-### Example:
+### Simple Example:
+```swift
+label.top(10).left(5).right(20).bottom()
+```
+
+### Example with different components:
 ```swift
 label.topAnchor ~ customView.bottomAnchor + 7.0
 label.leftAnchor ~ customView.leftAnchor + 15.0
