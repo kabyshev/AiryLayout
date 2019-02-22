@@ -1,5 +1,5 @@
-# PinLayoutKit
-Simple AutoLayout wrapper - write readable layouts!
+# AiryLayout 💨
+Simple Auto Layout wrapper - write readable layouts!
 
 [![Language: Swift 4.2](https://img.shields.io/badge/language-swift%204-f48041.svg?style=flat)](https://developer.apple.com/swift)
 
@@ -28,4 +28,9 @@ button
    .right(24).width(22)
    
 button2.pin([.top(0): .top, .left(10): .right], to: label2).width(22)
+```
+
+### Disabling safe area API
+```swift
+collectionView.left().right().withoutSafeArea { $0.top().bottom() }
 ```
