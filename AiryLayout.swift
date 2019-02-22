@@ -1,5 +1,5 @@
 // swiftlint:disable:this file_name
-// Layout Magic
+// AiryLayout
 // Created by Maxim Kabyshev on 23.07.2017. All rights reserved.
 //
 
@@ -19,39 +19,59 @@ enum LayoutSideDirection: Int {
     case bottom
 }
 
+private var isSafeAreaEnabled: Bool = true
+
 extension UIView {
 
+    /// Setting translatesAutoresizingMaskIntoConstraints to false
     func prepareForAutoLayout() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self
     }
 
+    /// Installing constraints by all methods in this extension with no safeArea logic
+    /// - parameter closure: returns current UIView for manipulations.
+    ///
+    /// Using third-party methods (not from this extension) in the closure will not lead to any effect or, conversely,
+    /// to undefined behavior.
+    @available(iOS 11.0, *)
+    @discardableResult
+    func withoutSafeArea(_ closure: (UIView) -> Void) -> Self {
+        isSafeAreaEnabled = false
+        closure(self)
+        isSafeAreaEnabled = true
+        return self
+    }
+
     // MARK: - Pin -
 
-    /*
-     All methods reverse inset's sign for .right and .bottom sides and directions.
-     Also all methods call prepareForAutoLayout() - you don't need to use this method manually
-
-     - parameter view: nil will be interpreted as the command to use view's superview
-     */
+    /// All methods reverse inset's sign for .right and .bottom sides and directions.
+    /// Also all methods call prepareForAutoLayout() - you don't need to use this method manually
+    ///
+    /// - parameter view: nil will be interpreted as the command to use view's superview
     @discardableResult
     func pin(insets: UIEdgeInsets = .zero, to toView: UIView? = nil) -> UIView {
 
         let view = check(toView)
 
-        safeAreaLayoutGuide.topAnchor ~ view.safeAreaLayoutGuide.topAnchor + insets.top
-        safeAreaLayoutGuide.trailingAnchor ~ view.safeAreaLayoutGuide.trailingAnchor - insets.right
-        safeAreaLayoutGuide.leadingAnchor ~ view.safeAreaLayoutGuide.leadingAnchor + insets.left
-        safeAreaLayoutGuide.bottomAnchor ~ view.safeAreaLayoutGuide.bottomAnchor - insets.bottom
+        safeTopAnchor ~ view.safeTopAnchor + insets.top
+        safeTrailingAnchor ~ view.safeTrailingAnchor - insets.right
+        safeLeadingAnchor ~ view.safeLeadingAnchor + insets.left
+        safeBottomAnchor ~ view.safeBottomAnchor - insets.bottom
 
         return self
     }
 
+    /// Create constraints with inset from each side.
     @discardableResult
     func pin(_ inset: CGFloat = 0.0) -> UIView {
         return pin(insets: UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset))
     }
 
+    /// Create constraints with certain logic.
+    /// - parameter excluding: side that is not handled
+    /// - parameter insets: UIEdgeInsets struct with insets for each side. Default is .zero
+    /// - parameter to: UIView instance which the constraints are attached. Default is nil (superview will be used).
     @discardableResult
     func pin(excluding side: LayoutSideDirection, insets: UIEdgeInsets = .zero, to toView: UIView? = nil) -> UIView {
         switch side {
@@ -85,15 +105,16 @@ extension UIView {
         sides.forEach { side in
             switch side {
             case let .top(inset):
-                safeAreaLayoutGuide.topAnchor ~ view.safeAreaLayoutGuide.topAnchor + inset
+                safeTopAnchor ~ view.safeTopAnchor + inset
             case let .right(inset):
-                safeAreaLayoutGuide.trailingAnchor ~ view.safeAreaLayoutGuide.trailingAnchor - inset
+                safeTrailingAnchor ~ view.safeTrailingAnchor - inset
             case let .left(inset):
-                safeAreaLayoutGuide.leadingAnchor ~ view.safeAreaLayoutGuide.leadingAnchor + inset
+                safeLeadingAnchor ~ view.safeLeadingAnchor + inset
             case let .bottom(inset):
-                safeAreaLayoutGuide.bottomAnchor ~ view.safeAreaLayoutGuide.bottomAnchor - inset
+                safeBottomAnchor ~ view.safeBottomAnchor - inset
             }
         }
+
         return self
     }
 
@@ -157,33 +178,47 @@ extension UIView {
     @discardableResult
     func centerY(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.centerYAnchor ~ view.safeAreaLayoutGuide.centerYAnchor + inset
+        safeCenterYAnchor ~ view.safeCenterYAnchor + inset
         return self
     }
 
     @discardableResult
     func centerX(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.centerXAnchor ~ view.safeAreaLayoutGuide.centerXAnchor + inset
+        safeCenterXAnchor ~ view.safeCenterXAnchor + inset
         return self
     }
 
     @discardableResult
-    func height(_ inset: CGFloat = 0.0) -> UIView {
-        heightAnchor ~ inset
+    func height(_ value: CGFloat = 0.0) -> UIView {
+        heightAnchor ~ value
         return self
     }
 
     @discardableResult
-    func width(_ inset: CGFloat = 0.0) -> UIView {
-        widthAnchor ~ inset
+    func height(value: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
+        let view = check(toView)
+        heightAnchor ~ view.heightAnchor + value
+        return self
+    }
+
+    @discardableResult
+    func width(_ value: CGFloat = 0.0) -> UIView {
+        widthAnchor ~ value
+        return self
+    }
+
+    @discardableResult
+    func width(value: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
+        let view = check(toView)
+        widthAnchor ~ view.widthAnchor + value
         return self
     }
 
     @discardableResult
     func left(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.leadingAnchor ~ view.safeAreaLayoutGuide.leadingAnchor + inset
+        safeLeadingAnchor ~ view.safeLeadingAnchor + inset
         return self
     }
 
@@ -191,14 +226,14 @@ extension UIView {
     func left(to side: LayoutPinnedSide, of toView: UIView? = nil) -> UIView {
         let view = check(toView)
         let (_, inset) = direction(from: side)
-        safeAreaLayoutGuide.leadingAnchor ~ view.anchorX(for: side) + inset
+        safeLeadingAnchor ~ view.anchorX(for: side) + inset
         return self
     }
 
     @discardableResult
     func right(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.trailingAnchor ~ view.safeAreaLayoutGuide.trailingAnchor - inset
+        safeTrailingAnchor ~ view.safeTrailingAnchor - inset
         return self
     }
 
@@ -206,14 +241,14 @@ extension UIView {
     func right(to side: LayoutPinnedSide, of toView: UIView? = nil) -> UIView {
         let view = check(toView)
         let (_, inset) = direction(from: side)
-        safeAreaLayoutGuide.trailingAnchor ~ view.anchorX(for: side) - inset
+        safeTrailingAnchor ~ view.anchorX(for: side) - inset
         return self
     }
 
     @discardableResult
     func top(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.topAnchor ~ view.safeAreaLayoutGuide.topAnchor + inset
+        safeTopAnchor ~ view.safeTopAnchor + inset
         return self
     }
 
@@ -221,14 +256,14 @@ extension UIView {
     func top(to side: LayoutPinnedSide, of toView: UIView? = nil) -> UIView {
         let view = check(toView)
         let (_, inset) = direction(from: side)
-        safeAreaLayoutGuide.topAnchor ~ view.anchorY(for: side) + inset
+        safeTopAnchor ~ view.anchorY(for: side) + inset
         return self
     }
 
     @discardableResult
     func bottom(_ inset: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
         let view = check(toView)
-        safeAreaLayoutGuide.bottomAnchor ~ view.safeAreaLayoutGuide.bottomAnchor - inset
+        safeBottomAnchor ~ view.safeBottomAnchor - inset
         return self
     }
 
@@ -236,7 +271,7 @@ extension UIView {
     func bottom(to side: LayoutPinnedSide, of toView: UIView? = nil) -> UIView {
         let view = check(toView)
         let (_, inset) = direction(from: side)
-        safeAreaLayoutGuide.bottomAnchor ~ view.anchorY(for: side) - inset
+        safeBottomAnchor ~ view.anchorY(for: side) - inset
         return self
     }
 }
@@ -290,9 +325,9 @@ private extension UIView {
     private func anchorX(for side: LayoutPinnedSide) -> NSLayoutXAxisAnchor {
         switch side {
         case .right:
-            return safeAreaLayoutGuide.trailingAnchor
+            return safeTrailingAnchor
         case .left:
-            return safeAreaLayoutGuide.leadingAnchor
+            return safeLeadingAnchor
         default:
             fatalError("Something went wrong")
         }
@@ -302,9 +337,9 @@ private extension UIView {
     private func anchorY(for side: LayoutPinnedSide) -> NSLayoutYAxisAnchor {
         switch side {
         case .top:
-            return safeAreaLayoutGuide.topAnchor
+            return safeTopAnchor
         case .bottom:
-            return safeAreaLayoutGuide.bottomAnchor
+            return safeBottomAnchor
         default:
             fatalError("Something went wrong")
         }
@@ -459,4 +494,63 @@ func ~> (lhs: NSLayoutXAxisAnchor, rhs: NSLayoutXAxisAnchor) -> NSLayoutConstrai
     let constraint = lhs.constraint(greaterThanOrEqualTo: rhs)
     constraint.isActive = true
     return constraint
+}
+
+extension UIView {
+
+    var safeTopAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.topAnchor
+        } else {
+            return topAnchor
+        }
+    }
+
+    var safeBottomAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.bottomAnchor
+        } else {
+            return bottomAnchor
+        }
+    }
+
+    var safeLeftAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.leftAnchor
+        } else {
+            return leftAnchor
+        }
+    }
+
+    var safeLeadingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.leadingAnchor
+        } else {
+            return leadingAnchor
+        }
+    }
+
+    var safeTrailingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.trailingAnchor
+        } else {
+            return trailingAnchor
+        }
+    }
+
+    var safeCenterXAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.centerXAnchor
+        } else {
+            return centerXAnchor
+        }
+    }
+
+    var safeCenterYAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *), isSafeAreaEnabled {
+            return safeAreaLayoutGuide.centerYAnchor
+        } else {
+            return centerYAnchor
+        }
+    }
 } // swiftlint:disable:this file_length
