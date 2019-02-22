@@ -389,111 +389,90 @@ func - <T>(lhs: ConstraintAttribute<T>, rhs: CGFloat) -> ConstraintAttribute<T> 
     return ConstraintAttribute(anchor: lhs.anchor, const: lhs.const - rhs)
 }
 
-precedencegroup LayoutMagicEquivalence {
+precedencegroup AiryLayoutEquivalence {
     higherThan: ComparisonPrecedence
     lowerThan: AdditionPrecedence
 }
 
-infix operator ~: LayoutMagicEquivalence
-infix operator <~: LayoutMagicEquivalence
-infix operator ~>: LayoutMagicEquivalence
+infix operator ~: AiryLayoutEquivalence
+infix operator <~: AiryLayoutEquivalence
+infix operator ~>: AiryLayoutEquivalence
 
 @discardableResult
 func ~ (lhs: NSLayoutYAxisAnchor, rhs: UILayoutSupport) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs.bottomAnchor)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs.bottomAnchor).activate()
 }
 
 @discardableResult
 func ~ <T>(lhs: NSLayoutAnchor<T>, rhs: NSLayoutAnchor<T>) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs).activate()
 }
 
 @discardableResult
 func ~ <T>(lhs: NSLayoutAnchor<T>, rhs: ConstraintAttribute<T>) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs.anchor, constant: rhs.const)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs.anchor, constant: rhs.const).activate()
 }
 
 @discardableResult
 func ~ (lhs: NSLayoutYAxisAnchor, rhs: NSLayoutYAxisAnchor) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs).activate()
 }
 
 @discardableResult
 func ~ (lhs: NSLayoutXAxisAnchor, rhs: NSLayoutXAxisAnchor) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs).activate()
 }
 
 @discardableResult
 func ~ (lhs: NSLayoutYAxisAnchor, rhs: LayoutGuideAttribute) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalTo: rhs.guide.bottomAnchor, constant: rhs.const)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalTo: rhs.guide.bottomAnchor, constant: rhs.const).activate()
 }
 
 @discardableResult
 func ~ (lhs: NSLayoutDimension, rhs: CGFloat) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(equalToConstant: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(equalToConstant: rhs).activate()
 }
 
 @discardableResult
 func <~ <T>(lhs: NSLayoutAnchor<T>, rhs: ConstraintAttribute<T>) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(lessThanOrEqualTo: rhs.anchor, constant: rhs.const)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(lessThanOrEqualTo: rhs.anchor, constant: rhs.const).activate()
 }
 
 @discardableResult
 func <~ (lhs: NSLayoutYAxisAnchor, rhs: NSLayoutYAxisAnchor) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(lessThanOrEqualTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(lessThanOrEqualTo: rhs).activate()
 }
 
 @discardableResult
 func <~ (lhs: NSLayoutDimension, rhs: CGFloat) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(lessThanOrEqualToConstant: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(lessThanOrEqualToConstant: rhs).activate()
 }
 
 @discardableResult
 func ~> <T>(lhs: NSLayoutAnchor<T>, rhs: ConstraintAttribute<T>) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(greaterThanOrEqualTo: rhs.anchor, constant: rhs.const)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(greaterThanOrEqualTo: rhs.anchor, constant: rhs.const).activate()
 }
 
 @discardableResult
 func ~> (lhs: NSLayoutDimension, rhs: CGFloat) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(greaterThanOrEqualToConstant: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(greaterThanOrEqualToConstant: rhs).activate()
 }
 
 @discardableResult
 func ~> (lhs: NSLayoutYAxisAnchor, rhs: NSLayoutYAxisAnchor) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(greaterThanOrEqualTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(greaterThanOrEqualTo: rhs).activate()
 }
 
 @discardableResult
 func ~> (lhs: NSLayoutXAxisAnchor, rhs: NSLayoutXAxisAnchor) -> NSLayoutConstraint {
-    let constraint = lhs.constraint(greaterThanOrEqualTo: rhs)
-    constraint.isActive = true
-    return constraint
+    return lhs.constraint(greaterThanOrEqualTo: rhs).activate()
+}
+
+extension NSLayoutConstraint {
+    func activate() -> Self {
+        isActive = true
+        return self
+    }
 }
 
 extension UIView {
