@@ -189,6 +189,14 @@ extension UIView {
     }
 
     @discardableResult
+    func centerWithInsets(x: CGFloat = 0.0, y: CGFloat = 0.0, to toView: UIView? = nil) -> UIView {
+        let view = check(toView)
+        safeCenterYAnchor ~ view.safeCenterYAnchor + y
+        safeCenterXAnchor ~ view.safeCenterXAnchor + x
+        return self
+    }
+
+    @discardableResult
     func height(_ value: CGFloat = 0.0) -> UIView {
         heightAnchor ~ value
         return self
