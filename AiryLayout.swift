@@ -279,16 +279,16 @@ extension UIView {
 
 private extension UIView {
 
-    @inline(__always)
     private func check(_ view: UIView?) -> UIView {
-        guard view == nil else {
+        defer {
             translatesAutoresizingMaskIntoConstraints = false
+        }
+        guard view == nil else {
             return view! // swiftlint:disable:this force_unwrapping
         }
         guard let superview = superview else {
             fatalError("No superview for your view and also parameter `view` is nil")
         }
-        translatesAutoresizingMaskIntoConstraints = false
         return superview
     }
 
@@ -320,7 +320,6 @@ private extension UIView {
         }
     }
 
-    @inline(__always)
     private func anchorX(for side: LayoutPinnedSide) -> NSLayoutXAxisAnchor {
         switch side {
         case .right:
@@ -332,7 +331,6 @@ private extension UIView {
         }
     }
 
-    @inline(__always)
     private func anchorY(for side: LayoutPinnedSide) -> NSLayoutYAxisAnchor {
         switch side {
         case .top:
