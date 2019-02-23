@@ -8,7 +8,13 @@ Simple Auto Layout wrapper - write readable layouts!
 label.top(10).left(5).right(20).bottom()
 ```
 
-### Example with different components:
+### Pins edge to edge and with inset:
+```swift
+tableView.pin()
+scrollView.pin(10)
+```
+
+### Different components:
 ```swift
 label.topAnchor ~ customView.bottomAnchor + 7.0
 label.leftAnchor ~ customView.leftAnchor + 15.0
@@ -17,12 +23,6 @@ label.rightAnchor ~ customView.rightAnchor - 4.0
 ### Equals more compact API:
 ```swift
 label.pin([.top(7): .bottom, .left(15): .left, .right(4): .right], to: customView)
-```
-
-### Pins edge to edge and with inset also:
-```swift
-tableView.pin()
-scrollView.pin(10)
 ```
 
 ### Combinations:
