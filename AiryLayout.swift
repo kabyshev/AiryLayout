@@ -280,9 +280,6 @@ extension UIView {
 private extension UIView {
 
     private func check(_ view: UIView?) -> UIView {
-        defer {
-            translatesAutoresizingMaskIntoConstraints = false
-        }
         guard view == nil else {
             return view! // swiftlint:disable:this force_unwrapping
         }
