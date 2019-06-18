@@ -19,7 +19,7 @@ enum LayoutSideDirection: Int {
     case bottom
 }
 
-private var isSafeAreaEnabled: Bool = true
+private var isSafeAreaEnabled: Bool = false
 
 extension UIView {
 
@@ -35,17 +35,16 @@ extension UIView {
     /// Using third-party methods (not from this extension) in the closure will not lead to any effect or, conversely,
     /// to undefined behavior.
     @discardableResult
-    func withoutSafeArea(_ closure: (UIView) -> Void) -> Self {
-        isSafeAreaEnabled = false
-        closure(self)
+    func safeArea(_ closure: (UIView) -> Void) -> Self {
         isSafeAreaEnabled = true
+        closure(self)
+        isSafeAreaEnabled = false
         return self
     }
 
     // MARK: - Pin -
 
-    /// All methods reverse inset's sign for .right and .bottom sides and directions.
-    /// Also all methods call prepareForAutoLayout() - you don't need to use this method manually
+    /// All methods reverse inset's sign for .right and .bottom sides and directions
     ///
     /// - parameter view: nil will be interpreted as the command to use view's superview
     @discardableResult
