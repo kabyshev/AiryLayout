@@ -27,13 +27,18 @@ label.pin([.top(7): .bottom, .left(15): .left, .right(4): .right], to: customVie
 
 ### Combinations:
 ```swift
+switcher.centerY().left(8)
+
+label.centerY().centerX()
+
 button
-   .left(to: .right(10), of: label)
+   .left(to: .right(20), of: label)
    .top(to: switcher)
-   .right(24).width(22)
-   
-button2.pin([.top(0): .top, .left(10): .right], to: label2).width(22)
+   .right(24)
 ```
+<p align="left">
+  <img src="https://i.imgur.com/X0w6WIS.png" width="400">
+</p>
 
 ### Enabling safe area API
 ```swift
