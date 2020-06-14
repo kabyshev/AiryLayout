@@ -1,7 +1,7 @@
-# AiryLayout 🍃
+# AiryLayout 💨
 A simple Auto Layout wrapper - write readable layouts!
 
-[![Language: Swift 4.2](https://img.shields.io/badge/language-swift%204-f48041.svg?style=flat)](https://developer.apple.com/swift)
+[![Language: Swift 5.0](https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat")](https://developer.apple.com/swift)
 
 ### Simple Example:
 ```swift
@@ -27,15 +27,20 @@ label.pin([.top(7): .bottom, .left(15): .left, .right(4): .right], to: customVie
 
 ### Combinations:
 ```swift
-button
-   .left(to: .right(10), of: label)
-   .top(to: switcher)
-   .right(24).width(22)
-   
-button2.pin([.top(0): .top, .left(10): .right], to: label2).width(22)
-```
+switcher.centerY().left(8)
 
-### Disabling safe area API
+label.centerY().centerX()
+
+button
+   .left(to: .right(20), of: label)
+   .top(to: switcher)
+   .right(24)
+```
+<p align="left">
+  <img src="https://i.imgur.com/X0w6WIS.png" width="400">
+</p>
+
+### Enabling safe area API
 ```swift
-collectionView.left().right().withoutSafeArea { $0.top().bottom() }
+collectionView.left().right().safeArea { $0.top().bottom(10) }
 ```
