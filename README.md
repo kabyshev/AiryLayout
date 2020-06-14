@@ -44,3 +44,17 @@ button
 ```swift
 collectionView.left().right().safeArea { $0.top().bottom(10) }
 ```
+
+## Installation
+### Swift Package Manager
+The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
+
+Just add AiryLayout in your Package.swift.
+```swift
+dependencies: [
+    .package(url: "https://github.com/kabyshev/AiryLayout.git", .branch("master"))
+]
+```
+
+### Manually
+If you prefer not to use SPM, you can integrate AiryLayout into your project manually: add `Sources` folder to your project.
