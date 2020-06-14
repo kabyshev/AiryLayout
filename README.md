@@ -1,5 +1,5 @@
-# AiryLayout 💨
-Simple Auto Layout wrapper - write readable layouts!
+# AiryLayout 🍃
+A simple Auto Layout wrapper - write readable layouts!
 
 [![Language: Swift 4.2](https://img.shields.io/badge/language-swift%204-f48041.svg?style=flat)](https://developer.apple.com/swift)
 
