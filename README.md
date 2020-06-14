@@ -27,6 +27,11 @@ label.pin([.top(7): .bottom, .left(15): .left, .right(4): .right], to: customVie
 
 ### Combinations:
 ```swift
+
+@Layouting var switcher = UISwitch()
+@Layouting var label = UILabel()
+@Layouting var button = UIButton()
+
 switcher.centerY().left(8)
 
 label.centerY().centerX()
@@ -49,10 +54,10 @@ collectionView.left().right().safeArea { $0.top().bottom(10) }
 ### Swift Package Manager
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
 
-Just add AiryLayout in your Package.swift.
+Just add AiryLayout in your `Package.swift` as a dependency:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/kabyshev/AiryLayout.git", .branch("master"))
+    .package(url: "https://github.com/kabyshev/AiryLayout.git", .upToNextMajor(from: "1.0.0"))
 ]
 ```
 
