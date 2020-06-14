@@ -360,27 +360,27 @@ public struct LayoutGuideAttribute {
     let const: CGFloat
 }
 
-func + <T>(lhs: NSLayoutAnchor<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
+public func + <T>(lhs: NSLayoutAnchor<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
     ConstraintAttribute(anchor: lhs, const: rhs)
 }
 
-func + (lhs: UILayoutSupport, rhs: CGFloat) -> LayoutGuideAttribute {
+public func + (lhs: UILayoutSupport, rhs: CGFloat) -> LayoutGuideAttribute {
     LayoutGuideAttribute(guide: lhs, const: rhs)
 }
 
-func + <T>(lhs: ConstraintAttribute<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
+public func + <T>(lhs: ConstraintAttribute<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
     ConstraintAttribute(anchor: lhs.anchor, const: lhs.const + rhs)
 }
 
-func - <T>(lhs: NSLayoutAnchor<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
+public func - <T>(lhs: NSLayoutAnchor<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
     ConstraintAttribute(anchor: lhs, const: -rhs)
 }
 
-func - (lhs: UILayoutSupport, rhs: CGFloat) -> LayoutGuideAttribute {
+public func - (lhs: UILayoutSupport, rhs: CGFloat) -> LayoutGuideAttribute {
     LayoutGuideAttribute(guide: lhs, const: -rhs)
 }
 
-func - <T>(lhs: ConstraintAttribute<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
+public func - <T>(lhs: ConstraintAttribute<T>, rhs: CGFloat) -> ConstraintAttribute<T> {
     ConstraintAttribute(anchor: lhs.anchor, const: lhs.const - rhs)
 }
 
@@ -463,7 +463,7 @@ public func ~> (lhs: NSLayoutXAxisAnchor, rhs: NSLayoutXAxisAnchor) -> NSLayoutC
     lhs.constraint(greaterThanOrEqualTo: rhs).activate()
 }
 
-extension NSLayoutConstraint {
+private extension NSLayoutConstraint {
     func activate() -> Self {
         isActive = true
         return self
